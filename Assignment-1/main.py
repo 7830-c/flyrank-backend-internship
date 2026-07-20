@@ -22,9 +22,16 @@ def root():
 def health():
     return {"status":"ok"}
 
-@app.post("/tasks")
-
-
+@app.post("/tasks",status_code=status.HTTP_201_CREATED)
+def create_task(title:str):
+    if not title.strip():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="Title is required and cannot be empty")
+    else:
+        tasks.append(Task(id=len(tasks)+1, title=title.strip(), done=False))
+        
+        return tasks[-1]
+        
+         
 @app.get("/tasks")
 def get_task():
     return tasks
