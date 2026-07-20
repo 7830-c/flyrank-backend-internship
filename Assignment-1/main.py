@@ -44,3 +44,37 @@ def get_task(id:int):
             return task
     
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Task {id} not found")
+
+
+@app.put("/tasks/{id}")
+def update_task(id:int,title:str=None,done:bool=None):
+    
+    if title is None and done is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="At least one field (title or done) must be provided for update")
+    
+    if title is not None and not title.strip():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="Title can't be empty")
+    
+    for task in tasks:
+        if task.id==id:
+            if title is not None:
+                task.title=title
+            if done is not None:
+                task.done=done
+            return task
+        
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Task {id} not found")
+
+
+@app.delete("/tasks/{id}",status_code=status.HTTP_204_NO_CONTENT)
+def delete_task(id:int):    
+    for task in tasks:
+        if task.id==id:
+            tasks.remove(task)
+            return {}
+        
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail={"error": f"Task {id} not found"}
+    )
