@@ -15,14 +15,14 @@ tasks=[Task(id=1, title="Learn FastAPI", done=False),
 
 @app.get("/")
 def root():
-    return {"name":"Task API" ,"version":"1.0","endpoints":["/tasks","/health"]}
+    return {"name":"Task API" ,"version":"1.0","endpoints":["/tasks","/health","/docs"]}
 
 
 @app.get("/health")
 def health():
     return {"status":"ok"}
 
-@app.post("/tasks",status_code=status.HTTP_201_CREATED)
+@app.post("/tasks",status_code=status.HTTP_201_CREATED,description="Create a new task. ")
 def create_task(title:str):
     if not title.strip():
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="Title is required and cannot be empty")
@@ -32,12 +32,12 @@ def create_task(title:str):
         return tasks[-1]
         
          
-@app.get("/tasks")
+@app.get("/tasks",description="Get all tasks.")
 def get_task():
     return tasks
 
 
-@app.get("/tasks/{id}")
+@app.get("/tasks/{id}",description="Get a task by its ID.")
 def get_task(id:int):
     for task in tasks:
         if task.id == id:
@@ -46,7 +46,7 @@ def get_task(id:int):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Task {id} not found")
 
 
-@app.put("/tasks/{id}")
+@app.put("/tasks/{id}",description="Update a task by its ID."   )
 def update_task(id:int,title:str=None,done:bool=None):
     
     if title is None and done is None:
@@ -67,12 +67,12 @@ def update_task(id:int,title:str=None,done:bool=None):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"Task {id} not found")
 
 
-@app.delete("/tasks/{id}",status_code=status.HTTP_204_NO_CONTENT)
+@app.delete("/tasks/{id}",status_code=status.HTTP_204_NO_CONTENT,description="Delete a task by its ID.")
 def delete_task(id:int):    
     for task in tasks:
         if task.id==id:
             tasks.remove(task)
-            return {}
+            return 
         
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
