@@ -78,6 +78,9 @@ Example response:
 
 The following screenshots illustrate the CRUD flow in Swagger UI.
 
+### List All Endpoints
+![List Endpoints](docs/list_all_endpoints.png)
+
 ### Create Task
 ![Create Task](docs/create_task.png)
 
@@ -96,6 +99,5 @@ The following screenshots illustrate the CRUD flow in Swagger UI.
 ### Remaining Tasks After Delete
 ![Remaining Tasks](docs/remaining_tasks_after_delete.png)
 
-### List All Endpoints
-![List Endpoints](docs/list_all_endpoints.png)
+
 
